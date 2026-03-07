@@ -3,11 +3,14 @@ package ma.yassine.activitepratique2.web;
 import jakarta.validation.Valid;
 import ma.yassine.activitepratique2.entities.Product;
 import ma.yassine.activitepratique2.repositories.ProductRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * @author pc
@@ -21,8 +24,16 @@ public class ProductController {
     }
 
     @GetMapping("/index")
-    public String products(Model model){
-        model.addAttribute("products",productRepository.findAll());
+    public String products(Model model,
+                           @RequestParam(name="page",defaultValue = "0") int page,
+                           @RequestParam(name="size",defaultValue = "5") int size,
+                           @RequestParam(name="keyword",defaultValue = "") String keyword
+                           ){
+        Page<Product> pageProducts=productRepository.findByNameContains(keyword, PageRequest.of(page,size));
+
+        model.addAttribute("products",pageProducts.getContent());
+        model.addAttribute("pages",new int[pageProducts.getTotalPages()]);
+        model.addAttribute("keyword",keyword);
         return "products";
     }
 
