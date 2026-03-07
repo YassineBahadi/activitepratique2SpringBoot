@@ -9,7 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-
+import org.springframework.security.config.Customizer;
 /**
  * @author pc
  **/
@@ -52,13 +52,15 @@ public class SecurityConfig {
                         .requestMatchers("/webjars/**","/css/**","/js/**").permitAll()
 
                         //admin endpoints
-                        .requestMatchers("/delete","/formProducts").hasRole("AMDIN")
+                        .requestMatchers("/delete","/formProducts").hasRole("ADMIN")
 
                         // user endpoints
                         .requestMatchers("/index").hasRole("USER")
 
                         //fallback rule
                         .anyRequest().authenticated()
+                )
+                .formLogin(Customizer.withDefaults()
                 );
 
         return http.build();

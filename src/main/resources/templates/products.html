@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+>
 <head>
     <meta charset="UTF-8">
     <title>Products</title>
@@ -14,7 +17,7 @@
                 <th>Name</th>
                 <th>Price</th>
                 <th>Quantity</th>
-                <th>Action</th>
+                <th sec:authorize="hasRole('ADMIN')">Action</th>
             </tr>
         </thead>
         <tbody>
@@ -24,7 +27,7 @@
                 <td th:text="${p.name}"></td>
                 <td th:text="${p.price}"></td>
                 <td th:text="${p.quantity}"></td>
-                <td>
+                <td sec:authorize="hasRole('ADMIN')">
                     <a th:href="@{/delete(id=${p.id})}" class="btn btn-danger">Delete</a>
                     <a th:href="@{/editProduct(id=${p.id})}" class="btn btn-primary">Edit</a>
                 </td>
