@@ -58,4 +58,11 @@ public class ProductController {
         productRepository.save(product);
         return "redirect:/index";
     }
+
+    @GetMapping("/editProduct")
+    public String editProduct(Model model,Long id){
+        Product product=productRepository.findById(id).get();
+        model.addAttribute("product",product);
+        return "formProducts";
+    }
 }

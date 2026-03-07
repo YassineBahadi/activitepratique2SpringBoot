@@ -6,22 +6,22 @@
     <link rel="stylesheet" href="webjars/bootstrap/5.3.3/css/bootstrap.min.css">
 </head>
 <body>
-    <h1>Add Product</h1>
     <form th:action="@{/save}" method="post" th:object="${product}">
+        <input type="hidden" th:field="*{id}">
         <div class="mb-3">
-            <label for="">Name</label>
+            <label >Name</label>
             <input type="text" th:field="*{name}" class="form-control">
             <div class="text-danger" th:errors="*{name}"></div>
         </div>
 
         <div class="mb-3">
-            <label for="">Price</label>
+            <label >Price</label>
             <input type="text" th:field="*{price}" class="form-control">
             <div class="text-danger" th:errors="*{price}"></div>
         </div>
 
         <div class="mb-3">
-            <label for="">Quantity</label>
+            <label >Quantity</label>
             <input type="number" th:field="*{quantity}" class="form-control">
             <div class="text-danger" th:errors="*{quantity}"></div>
         </div>
