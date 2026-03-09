@@ -9,9 +9,19 @@
     <link rel="stylesheet" href="webjars/bootstrap/5.3.3/css/bootstrap.min.css">
 </head>
 <body>
-    <h1>Products List</h1>
-    <table class="table table-striped">
-        <thead>
+    <div class="container">
+        <h1>Products List</h1>
+        <div sec:authorize="hasRole('ADMIN')">
+            <a th:href="@{/formProducts}" class="btn btn-primary">Add New Product</a>
+        </div>
+
+        <form method="get" class="mt-2" th:action="@{/index}">
+            <input type="text" name="keyword" th:value="${keyword}">
+            <button class="btn btn-success" type="submit">Search</button>
+        </form>
+
+        <table class="table table-striped">
+            <thead>
             <tr>
                 <th>ID</th>
                 <th>Name</th>
@@ -19,8 +29,8 @@
                 <th>Quantity</th>
                 <th sec:authorize="hasRole('ADMIN')">Action</th>
             </tr>
-        </thead>
-        <tbody>
+            </thead>
+            <tbody>
 
             <tr th:each="p:${products}">
                 <td th:text="${p.id}"></td>
@@ -32,10 +42,21 @@
                     <a th:href="@{/editProduct(id=${p.id})}" class="btn btn-primary">Edit</a>
                 </td>
             </tr>
-        </tbody>
+            </tbody>
 
 
 
-    </table>
+        </table>
+
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                <li class="page-item" th:each="page, status : ${pages}" th:class="${status.index==currentPage?'active':''}">
+                    <a class="page-link" th:href="@{index(page=${status.index},keyword=${keyword})}" th:text="${status.index + 1}" >
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
+    </div>
 </body>
 </html>

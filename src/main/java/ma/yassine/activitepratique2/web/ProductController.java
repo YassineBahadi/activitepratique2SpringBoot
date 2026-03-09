@@ -33,6 +33,7 @@ public class ProductController {
 
         model.addAttribute("products",pageProducts.getContent());
         model.addAttribute("pages",new int[pageProducts.getTotalPages()]);
+        model.addAttribute("currentPage",page);
         model.addAttribute("keyword",keyword);
         return "products";
     }
