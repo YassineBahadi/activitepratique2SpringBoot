@@ -38,8 +38,8 @@
                 <td th:text="${p.price}"></td>
                 <td th:text="${p.quantity}"></td>
                 <td sec:authorize="hasRole('ADMIN')">
-                    <a th:href="@{/delete(id=${p.id})}" class="btn btn-danger">Delete</a>
-                    <a th:href="@{/editProduct(id=${p.id})}" class="btn btn-primary">Edit</a>
+                    <a th:href="@{/delete(id=${p.id},keyword=${keyword},page=${currentPage})}" class="btn btn-danger">Delete</a>
+                    <a th:href="@{/editProduct(id=${p.id},keyword=${keyword},page=${currentPage})}" class="btn btn-primary">Edit</a>
                 </td>
             </tr>
             </tbody>

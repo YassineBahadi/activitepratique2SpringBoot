@@ -10,12 +10,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.config.Customizer;
+
+import static org.springframework.security.config.Customizer.withDefaults;
+
 /**
  * @author pc
  **/
+
 @Configuration
 public class SecurityConfig {
-
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
@@ -39,24 +42,26 @@ public class SecurityConfig {
 
         return new InMemoryUserDetailsManager(user,admin);
     }
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf->csrf.disable())
-                .headers(headers->headers.frameOptions(frame->frame.disable()))
-                .authorizeHttpRequests(auth->auth
-                        .requestMatchers("/login","/error").permitAll()
-
-                        .requestMatchers("/webjars/**","/css/**","/js/**").permitAll()
-
-                        .requestMatchers("/delete","/formProducts").hasRole("ADMIN")
-
+        http
+                .csrf(csrf -> csrf.disable())
+                .headers(headers -> headers.frameOptions(frame -> frame.disable()))
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/h2-console/**", "/webjars/**", "/css/**", "/js/**").permitAll()
+                        .requestMatchers("/delete", "/formProducts").hasRole("ADMIN")
                         .requestMatchers("/index").hasRole("USER")
-
                         .anyRequest().authenticated()
                 )
-                .oauth2Login(Customizer.withDefaults()
-                );
+//                .formLogin(Customizer.withDefaults());
+                .formLogin(form->form
+                        .loginPage("/login")
+                        .permitAll()
+                )
+                .logout(logout->logout
+                    .logoutSuccessUrl("/login?logout")
+                    .permitAll()
+        );
 
         return http.build();
     }

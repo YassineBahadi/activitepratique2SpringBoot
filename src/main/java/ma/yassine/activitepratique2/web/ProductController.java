@@ -23,6 +23,11 @@ public class ProductController {
         this.productRepository=productRepository;
     }
 
+    @GetMapping("/")
+    public String redirectToProducts(Model model){
+        return "redirect:/index";
+    }
+
     @GetMapping("/index")
     public String products(Model model,
                            @RequestParam(name="page",defaultValue = "0") int page,
@@ -40,9 +45,9 @@ public class ProductController {
 
 
     @GetMapping("/delete")
-    public String deleteProduct(Long id){
+    public String deleteProduct(Long id,String keyword,int page){
         productRepository.deleteById(id);
-        return "redirect:/index";
+        return "redirect:/index?page="+page+"&keyword="+keyword;
     }
 
     @GetMapping("/formProducts")
@@ -61,9 +66,16 @@ public class ProductController {
     }
 
     @GetMapping("/editProduct")
-    public String editProduct(Model model,Long id){
-        Product product=productRepository.findById(id).get();
-        model.addAttribute("product",product);
+    public String editProduct(Model model,Long id,String keyword,int page){
+        Product product=productRepository.findById(id).orElse(null);
+        if(product!=null){
+            model.addAttribute("product",product);
+            model.addAttribute("keyword",keyword);
+            model.addAttribute("page",page);
+        }
+        else{
+            throw new RuntimeException("Product not found");
+        }
         return "formProducts";
     }
 }
