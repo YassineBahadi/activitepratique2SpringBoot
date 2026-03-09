@@ -45,22 +45,17 @@ public class SecurityConfig {
         http.csrf(csrf->csrf.disable())
                 .headers(headers->headers.frameOptions(frame->frame.disable()))
                 .authorizeHttpRequests(auth->auth
-                        //public resources
                         .requestMatchers("/login","/error").permitAll()
 
-                        //static resources
                         .requestMatchers("/webjars/**","/css/**","/js/**").permitAll()
 
-                        //admin endpoints
                         .requestMatchers("/delete","/formProducts").hasRole("ADMIN")
 
-                        // user endpoints
                         .requestMatchers("/index").hasRole("USER")
 
-                        //fallback rule
                         .anyRequest().authenticated()
                 )
-                .formLogin(Customizer.withDefaults()
+                .oauth2Login(Customizer.withDefaults()
                 );
 
         return http.build();
