@@ -3,6 +3,7 @@ package ma.yassine.activitepratique2.security;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -18,6 +19,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
  **/
 
 @Configuration
+@EnableWebSecurity
 public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder(){
@@ -27,7 +29,6 @@ public class SecurityConfig {
     @Bean
     public InMemoryUserDetailsManager userDetailsService(){
         PasswordEncoder passwordEncoder=passwordEncoder();
-
         UserDetails user=
                 User.withUsername("user")
                         .password(passwordEncoder.encode("1234"))

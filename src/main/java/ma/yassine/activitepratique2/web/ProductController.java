@@ -24,7 +24,7 @@ public class ProductController {
     }
 
     @GetMapping("/")
-    public String redirectToProducts(Model model){
+    public String home(){
         return "redirect:/index";
     }
 
